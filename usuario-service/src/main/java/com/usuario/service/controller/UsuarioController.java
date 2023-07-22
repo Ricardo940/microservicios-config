@@ -82,28 +82,28 @@ public class UsuarioController {
     }
     @CircuitBreaker(name = "todosCB", fallbackMethod = "fallBackGetTodos")
     @GetMapping("/vehiculos/{usuarioId}")
-    public ResponseEntity<Map<String, Object>> obtenerUsuarioyVehiculos(@PathVariable int usuarioId){
+    public ResponseEntity<Map<String, Object>> obtenerUsuarioyVehiculos(@PathVariable(name = "usuarioId") int usuarioId){
         Map<String, Object> result = usuarioService.getUsuarioAndVehiculos(usuarioId);
         return ResponseEntity.ok(result);
     }
 
-    private ResponseEntity<String> fallBackGetCarros(@PathVariable("usuarioId") int id, RuntimeException exception){
+    private ResponseEntity<?> fallBackGetCarros(@PathVariable("usuarioId") int id, RuntimeException exception){
         return new ResponseEntity<>("Sucedio un error al listar los carros del usuario: " + id, HttpStatus.OK);
     }
 
-    private ResponseEntity<String> fallBackSaveCarro(@PathVariable("usuarioId") int id,@RequestBody Carro carro, RuntimeException exception){
+    private ResponseEntity<?> fallBackSaveCarro(@PathVariable("usuarioId") int id,@RequestBody Carro carro, RuntimeException exception){
         return new ResponseEntity<>("El usuario: " + id + "No tiene dinero para el carro "+ carro.getMarca(), HttpStatus.OK);
     }
 
-    private ResponseEntity<String> fallBackGetMotos(@PathVariable("usuarioId") int id, RuntimeException exception){
+    private ResponseEntity<?> fallBackGetMotos(@PathVariable("usuarioId") int id, RuntimeException exception){
         return new ResponseEntity<>("Sucedio un error al listar las motos del usuario: " + id, HttpStatus.OK);
     }
 
-    private ResponseEntity<String> fallBackSaveMoto(@PathVariable("usuarioId") int id,@RequestBody Moto moto, RuntimeException exception){
+    private ResponseEntity<?> fallBackSaveMoto(@PathVariable("usuarioId") int id,@RequestBody Moto moto, RuntimeException exception){
         return new ResponseEntity<>("El usuario: " + id + "No tiene dinero para la moto "+ moto.getMarca(), HttpStatus.OK);
     }
 
-    private ResponseEntity<String> fallBackGetTodos(@PathVariable("usuarioId") int id, RuntimeException exception){
+    private ResponseEntity<?> fallBackGetTodos(@PathVariable("usuarioId") int id, RuntimeException exception){
         return new ResponseEntity<>("Sucedio un error al listar las motos  y carros del usuario: " + id, HttpStatus.OK);
     }
 
